@@ -45,13 +45,13 @@ target_sources( IMGUI
         ${IMGUI_DIR}/imgui.cpp
 
         PRIVATE
-        ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer.cpp   
         ${IMGUI_DIR}/backends/imgui_impl_sdl.cpp
         )
 
 target_include_directories( IMGUI
         PUBLIC ${IMGUI_DIR}
-        PUBLIC ${IMGUI_DIR}/backends
+        PUBLIC ${IMGUI_DIR}/backends 
         PUBLIC ${SDL2_DIR}/include
         )
 
