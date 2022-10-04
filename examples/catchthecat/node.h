@@ -3,6 +3,7 @@
 
 #include <Point2D.h>
 #include <math.h>
+#include "hex.h"
 
 using namespace std;
 
@@ -24,6 +25,7 @@ class Node {
 
  private:
   Point2D* poin;
+  Hex hexa;
   int accumulatedWeight;
   int heuristicWeight;
   bool visit;

@@ -31,8 +31,6 @@ class hexCoord {
   int q;
   int r;
   int s;
-
-  static Point2D neighborDifferences[6];
 };
 
 #endif // HEXCOORD_H`

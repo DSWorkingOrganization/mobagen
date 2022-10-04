@@ -7,11 +7,13 @@ using namespace std;
 Node::Node() 
 { 
 	poin = new Point2D(0, 0); 
+	hexa = {poin->x, poin->y};
 }
 
 Node::Node(Point2D* pos) 
 { 
 	poin = pos; 
+	hexa = {poin->x, poin->y};
 }
 
 Node::~Node() {
