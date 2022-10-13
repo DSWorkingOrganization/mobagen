@@ -27,6 +27,8 @@ class hexCoord {
   int axialDistance(hexCoord axiA, hexCoord axiB);
   int offsetDistance(hexCoord A, hexCoord B);
 
+  Point2D neighborDifferences[6];
+
  private:
   int q;
   int r;

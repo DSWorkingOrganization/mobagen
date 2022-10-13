@@ -7,6 +7,9 @@ class Catcher: public Agent {
  public:
     explicit Catcher():Agent(){};
     Point2D Move(World*) override;
+
+    int calcDist(World* worl);
+    int getNum;
 };
 
 #endif  // CATCHER_H

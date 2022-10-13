@@ -20,7 +20,7 @@ class Hex {
 
   hexCoord getCoord();
   int getHeuristicDistance(Hex other);
-  vector<Point2D> getAdjacent(int mapsize, Point2D self);
+  static vector<Point2D> getAdjacent(Point2D p);
 
  private:
   hexCoord cord;

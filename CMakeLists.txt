@@ -20,7 +20,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #CHECK MINGW
 IF(NOT DEFINED MINGW)  
     SET(MINGW OFF)
-ENDIF()
+ENDIF()  
 
 # check if mingw
 #IF("${CMAKE_GENERATOR}" MATCHES "(M|m?)in(G|g?)(W|w?)")

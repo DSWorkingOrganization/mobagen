@@ -1,4 +1,5 @@
 #include "hex.h"
+#include "World.h"
 
 using namespace std;
 
@@ -46,48 +47,15 @@ int Hex::getHeuristicDistance(Hex other) {
   return cord.offsetDistance(cord, other.getCoord());
 }
 
-vector<Point2D> Hex::getAdjacent(int mapsize, Point2D self) { 
+vector<Point2D> Hex::getAdjacent(Point2D self) { 
 	vector<Point2D> toReturn;
 
-	toReturn.push_back({self.x + 1, self.y});
-
-	toReturn.push_back({self.x - 1, self.y});
-
-    if (self.y % 2) 
-	{
-        toReturn.push_back({self.x + 1, self.y - 1});
-    } 
-	else 
-	{
-        toReturn.push_back({self.x, self.y - 1});
-    }
-
-	if (self.y % 2) 
-	{
-		toReturn.push_back({self.x, self.y - 1});
-    }
-    else 
-	{
-		toReturn.push_back({self.x - 1, self.y - 1});
-    }
-
-	if (self.y % 2) 
-	{
-        toReturn.push_back({self.x, self.y + 1});
-    } 
-	else 
-	{
-        toReturn.push_back({self.x - 1, self.y + 1});
-    }
-        
-	if (self.y % 2) 
-	{
-        toReturn.push_back({self.x + 1, self.y + 1});
-    } 
-	else 
-	{
-        toReturn.push_back({self.x, self.y + 1});
-    }
+	toReturn.push_back(World::NE(self));
+    toReturn.push_back(World::NW(self));
+    toReturn.push_back(World::E(self));
+    toReturn.push_back(World::W(self));
+    toReturn.push_back(World::SE(self));
+    toReturn.push_back(World::SW(self));
 
 	return toReturn;
 }

@@ -6,22 +6,21 @@ using namespace std;
 
 Node::Node() 
 { 
-	poin = new Point2D(0, 0); 
-	hexa = {poin->x, poin->y};
+	//poin = Point2D(0, 0); 
+	hexa = {poin.x, poin.y};
 }
 
-Node::Node(Point2D* pos) 
+Node::Node(Point2D pos) 
 { 
 	poin = pos; 
-	hexa = {poin->x, poin->y};
+	hexa = {poin.x, poin.y};
 }
 
 Node::~Node() {
-  delete poin;
-  poin = nullptr;
+
 }
 
-void Node::setPoint(Point2D* pos) { 
+void Node::setPoint(Point2D pos) { 
 	poin = pos; 
 }
 
@@ -29,10 +28,8 @@ void Node::setAWeight(int weight) {
 	accumulatedWeight = weight; 
 }
 
-void Node::setHWeight(Point2D destination) {
-  int dx = abs(poin->x - destination.x);
-  int dy = abs(poin->y - destination.y);
-
+void Node::setHWeight(Point2D destination, int worldSize) {
+  heuristicWeight = min(worldSize - abs(poin.x), worldSize - abs(poin.y));
 }
 
 void Node::setVisted(bool visited) { 
@@ -44,7 +41,7 @@ void Node::setWall(bool wall) {
 }
 
 Point2D Node::getPos() { 
-	return *poin; 
+	return poin; 
 }
 
 int Node::getWeight() { 
@@ -53,4 +50,16 @@ int Node::getWeight() {
 
 bool Node::isVisited() { 
 	return visit; 
+}
+
+bool Node::getWall() { 
+	return isWall; 
+}
+
+int Node::getDistance(Hex other) { 
+	return hexa.getHeuristicDistance(other); 
+}
+
+vector<Point2D> Node::getNeighbors(Point2D p) { 
+	return Hex::getAdjacent(p);
 }

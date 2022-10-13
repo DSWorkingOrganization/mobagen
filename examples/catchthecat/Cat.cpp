@@ -25,8 +25,9 @@ Point2D Cat::Move(World* world) {
 
   // here I code in the win condition and navigation
 
-  auto rand = Random::Range(0,5);
-  auto pos = world->getCat();
+  //auto rand = Random::Range(0,5);
+
+  /*
   switch(rand){
     case 0:
       return World::NE(pos);
@@ -43,14 +44,12 @@ Point2D Cat::Move(World* world) {
     default:
       throw "random out of range";
   }
+  */
+
+  aStarSearch(world, worldMap(world));
+
+  auto finPlace = getPosInFind(1, world, from);
+
+  return finPlace;
 }
 
-//Point2D Cat::
-
-void Cat::getWorldNodes(World* world) {
-    frontier.clear();
-
-    for (int i = 0; i < world->getWorldSideSize(); i++) {
-      //frontier.push_back(unordered_set); 
-    }
-}
