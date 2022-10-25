@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void Agent::aStarSearch(World* world, map<int, map<int, Node>> weigh) 
+Point2D Agent::aStarSearch(World* world, map<int, map<int, Node>> weigh) 
 {
     int halfWorldSide = world->getWorldSideSize() / 2;
 	currentWeight = 0;
@@ -34,10 +34,13 @@ void Agent::aStarSearch(World* world, map<int, map<int, Node>> weigh)
             p.pop();
           }
 
+          //abs(current.x) == halfWorldSide || abs(current.y) == halfWorldSide
+
 		  if (abs(current.x) == halfWorldSide || abs(current.y) == halfWorldSide)       
           {
               exit = current;
-              break;
+              return exit;
+              //break;
           }
 
 		  auto neighbors = Node::getNeighbors({current.x, current.y});
@@ -54,12 +57,30 @@ void Agent::aStarSearch(World* world, map<int, map<int, Node>> weigh)
 
           pod = p.top();
 
-		  from[current.y][current.x] = pod.getPos();
+		  from[pod.getPos().y][pod.getPos().x] = current;
           visted[current.y][current.x] = true;
 
           lengthFrom++;
     }
 
+}
+
+Point2D Agent::escapPos(World* word, map<int, map<int, Node>> weigh) {
+  auto cat = word->getCat();
+    
+  auto neighbors = Node::getNeighbors({cat.x, cat.y});
+
+  vector<Node> randRet;
+
+  for (int i = 0; i < neighbors.size(); i++) {
+    if (validatePoint(neighbors[i], Point2D(0, 0), weigh)) {
+      randRet.push_back(neighbors[i]);
+    }
+  }
+
+  auto ran = Random::Range(0, randRet.size() - 1);
+
+  return neighbors[ran];
 }
 
 map<int, map<int, Node>> Agent::worldMap(World* world) {
@@ -87,23 +108,12 @@ Node Agent::getExitPos(World* world, map<int, map<int, Node>> weigh) {
 
   //map<int, map<int, Node>> findMap = weigh;
 
-  for (int i = -halfWorldSide; i <= halfWorldSide; i++) {
-    if (weigh[i][-halfWorldSide].getWall() == false) {
-      nodes.push_back(weigh[i][-halfWorldSide]);
-	}
-  }
-
-  for (int j = -halfWorldSide; j <= halfWorldSide; j++) {
-    if (weigh[j][halfWorldSide].getWall() == false) {
-      nodes.push_back(weigh[j][halfWorldSide]);
+  for (int line = -halfWorldSide; line <= halfWorldSide; line++) {
+    for (int col = -halfWorldSide; col <= halfWorldSide; col++) {
+      if ((abs(line) == halfWorldSide || abs(col) == halfWorldSide) &&
+          (weigh[line][col].getWall() == false && weigh[line][col].getPos() != world->getCat()))
+        nodes.push_back(weigh[line][col]);
     }
-  }
-
-  for (int k = -halfWorldSide; k < halfWorldSide; k++) {
-    if (weigh[-halfWorldSide][k].getWall() == false)
-      nodes.push_back(weigh[-halfWorldSide][k]);
-    if (weigh[halfWorldSide][k].getWall() == false)
-      nodes.push_back(weigh[halfWorldSide][k]);
   }
 
   if (nodes.empty() == false) {
@@ -122,8 +132,14 @@ Node Agent::getExitPos(World* world, map<int, map<int, Node>> weigh) {
 
 Node Agent::panicBehavior(World* world, map<int, map<int, Node>> weigh) {
   int size = world->getWorldSideSize() / 2;
-  auto rand1 = Random::Range(-size, size);
-  auto rand2 = Random::Range(-size, size);
+  int rand1;
+  int rand2;
+
+  do {
+    rand1 = Random::Range(-size, size);
+    rand2 = Random::Range(-size, size);
+  } while (weigh[rand2][rand1].getWall() == true ||
+           weigh[rand2][rand1].getPos() == world->getCat());
   
   return weigh[rand2][rand1];
 }

@@ -18,7 +18,7 @@ public:
   map<int, map<int, Point2D>> from;
   map<int, map<int, bool>> visted;
 
-  void aStarSearch(World* word, map<int, map<int, Node>> weigh);
+  Point2D aStarSearch(World* word, map<int, map<int, Node>> weigh);
   map<int, map<int, Node>> worldMap(World* world);
   Node getExitPos(World* world, map<int, map<int, Node>> weigh);
   Node panicBehavior(World* world, map<int, map<int, Node>> weigh);
@@ -27,6 +27,7 @@ public:
   int getWeightAround(Point2D find, map<int, map<int, Node>> nodes, int cBW);
   Point2D getPosInFind(int fromOr, World* worl, map<int, map<int, Point2D>> nodes);
   int getLength(int fromOr, World* worl, map<int, map<int, Node>> nodes);
+  Point2D escapPos(World* word, map<int, map<int, Node>> weigh);
   
   // map of bools, this is visited
 

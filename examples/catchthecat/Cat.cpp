@@ -46,10 +46,24 @@ Point2D Cat::Move(World* world) {
   }
   */
 
-  aStarSearch(world, worldMap(world));
+  auto exit = aStarSearch(world, worldMap(world));
 
-  auto finPlace = getPosInFind(1, world, from);
+  vector<Point2D> path;
 
-  return finPlace;
+
+  if (exit.x != INT_MAX) {
+    for (auto e = exit; e != cat; e = from[e.y][e.x]) {
+      path.push_back(e);
+    }
+  }
+
+  if (path.size() > 0)
+    return path[path.size() - 1];
+  else
+    return escapPos(world, worldMap(world));
+
+  //auto finPlace = getPosInFind(1, world, from);
+
+  //return finPlace;
 }
 
