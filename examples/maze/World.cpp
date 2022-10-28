@@ -27,19 +27,28 @@ bool World::GetWest(const Point2D& point) {
 }
 
 void World::SetNode(const Point2D& point, const Node& node) {
-  // todo implement this
+  bool north = node.GetNorth();
+  bool south = node.GetSouth();
+  bool east = node.GetEast();
+  bool west = node.GetWest();
+
+  SetNorth(point, north);
+  SetSouth(point, south);
+  SetEast(point, east);
+  SetWest(point, west);
+
 }
 void World::SetNorth(const Point2D& point, const bool& state) {
-  // todo implement this
+  data[Point2DtoIndex(point)] = state;
 }
 void World::SetEast(const Point2D& point, const bool& state) {
-  // todo implement this
+  data[Point2DtoIndex(point)+3] = state;
 }
 void World::SetSouth(const Point2D& point, const bool& state) {
-  // todo implement this
+  data[Point2DtoIndex(point) + (sideSize + 1) * 2] = state;
 }
 void World::SetWest(const Point2D& point, const bool& state) {
-  // todo implement this
+  data[Point2DtoIndex(point) + 1] = state;
 }
 
 void World::Start() {
