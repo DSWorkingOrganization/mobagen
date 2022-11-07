@@ -28,14 +28,15 @@ class World: GameObject {
   // the boxes colors
   std::vector<Color32> colors;
   // convert a point into the index of the left vertex of the node
-  inline int Point2DtoIndex(const Point2D& point){
-    // todo: test. unstable interface
-    auto sizeOver2 = sideSize/2;
-    return (point.y + sizeOver2)*(sideSize+1)*2 + (point.x + sizeOver2)*2;
-  }
  public:
   ~World();
   explicit World(Engine* pEngine, int size);
+
+  int Point2DtoIndex(const Point2D& point) {
+    // todo: test. unstable interface
+    auto sizeOver2 = sideSize / 2;
+    return (point.y + sizeOver2) * (sideSize + 1) * 2 + (point.x + sizeOver2) * 2;
+  }
 
   Node GetNode(const Point2D& point);
   bool GetNorth(const Point2D& point);

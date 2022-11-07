@@ -19,9 +19,6 @@ class MazeGenerator: public MazeGeneratorBase {
   void Clear(World * world);
   // todo: in order to step work properly, you have to store your current
   // exploration status in the MazeGenerator members
-  
-  map<int, map<int, Point2D>> layOut;
-  map<int, map<int, Point2D>> worldMap(World* world);
 };
 
 #endif

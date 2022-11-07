@@ -39,7 +39,10 @@ build/
 
 .DS_Store
 
-node_modules
+
+
+
+_modules
 
 package-lock.json
 

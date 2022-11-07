@@ -22,7 +22,7 @@ IF(NOT DEFINED MINGW)
     SET(MINGW OFF)
 ENDIF()  
 
-# check if mingw
+# check if mingw 
 #IF("${CMAKE_GENERATOR}" MATCHES "(M|m?)in(G|g?)(W|w?)")
 #    SET(MINGW ON)
 #    MESSAGE(STATUS "MinGW Detected")
