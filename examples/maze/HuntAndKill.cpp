@@ -82,13 +82,13 @@ Point2D HuntAndKill::parseRow(World* world, int y)
   for (int j = -(sizOv2); j < (sizOv2) + 1; j++) {
     if ((abs(j) <= sizOv2 && abs(y - 1) <= sizOv2) &&
         visited[world->Point2DtoIndex({j, y - 1})] &&
-        !world->GetNorth({j, y - 1}) &&
+        world->GetNorth({j, y - 1}) &&
         !visited[world->Point2DtoIndex({j, y})])
       {
-          world->SetNorth({j, y}, true);
-          world->SetEast({j, y}, false);
-          world->SetSouth({j, y}, false);
-          world->SetWest({j, y}, false);
+          world->SetNorth({j, y}, false);
+          world->SetEast({j, y}, true);
+          world->SetSouth({j, y}, true);
+          world->SetWest({j, y}, true);
           return {j, y};
       } else if ((abs(j + 1) <= sizOv2 && abs(y) <= sizOv2) &&
                visited[world->Point2DtoIndex({j + 1, y})] &&
@@ -135,7 +135,7 @@ Point2D HuntAndKill::walk(World* world, Point2D pos)
   visited[world->Point2DtoIndex(returnPoint)] = true;
 
   if (bud == false) {
-    world->SetNodeColor(returnPoint, Color::Red.Dark());
+    world->SetNodeColor(returnPoint, Color::Black);
 
     world->SetNode(returnPoint, {false, false, false, false});
 
@@ -165,7 +165,7 @@ Point2D HuntAndKill::hunt(World* world) {
         pont = parseRow(world, i);
         if (pont.x <= sizOv2) 
         {
-            world->SetNodeColor(pont, Color::Red.Dark());
+            world->SetNodeColor(pont, Color::Black);
             //visited[world->Point2DtoIndex(pont)] = true;
             startHunting = false;
             bud = true;

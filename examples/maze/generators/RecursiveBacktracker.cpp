@@ -8,6 +8,7 @@ bool RecursiveBacktracker::Step(World* w) {
     auto point = randomStartPoint(w);
     if(point.x==INT_MAX && point.y==INT_MAX)
       return false; // no empty space no fill
+    if (point.x != -w->GetSize() / 2 && point.y != -w->GetSize()) // remove a wall from a visitable neighbor
     stack.push_back(point);
     w->SetNodeColor(point, Color::Red.Dark());
   }
@@ -22,8 +23,9 @@ bool RecursiveBacktracker::Step(World* w) {
 
   // if we should not go deep, pop one element from the stack
   if(visitables.empty()) {
-    stack.pop_back();
-    w->SetNodeColor(current, Color::Black);
+    for (int i = 0; i < stack.size(); i++)
+      w->SetNodeColor(stack[i], Color::Black);
+    stack.clear();
     return true;
   }
   else { // go deeper
