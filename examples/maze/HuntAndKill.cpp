@@ -92,33 +92,33 @@ Point2D HuntAndKill::parseRow(World* world, int y)
           return {j, y};
       } else if ((abs(j + 1) <= sizOv2 && abs(y) <= sizOv2) &&
                visited[world->Point2DtoIndex({j + 1, y})] &&
-               !world->GetEast({j + 1, y}) &&
+               world->GetEast({j + 1, y}) &&
                !visited[world->Point2DtoIndex({j, y})])
       {
-        world->SetNorth({j, y}, false);
-        world->SetEast({j, y}, true);
-        world->SetSouth({j, y}, false); 
-        world->SetWest({j, y}, false);
+        world->SetNorth({j, y}, true);
+        world->SetEast({j, y}, false);
+        world->SetSouth({j, y}, true); 
+        world->SetWest({j, y}, true);
           return {j, y};
       } else if ((abs(j) <= sizOv2 && abs(y + 1) <= sizOv2) &&
                  visited[world->Point2DtoIndex({j, y + 1})] &&
-                 !world->GetSouth({j, y + 1}) &&
+                 world->GetSouth({j, y + 1}) &&
                  !visited[world->Point2DtoIndex({j, y})]) 
       {
-        world->SetNorth({j, y}, false);
-        world->SetEast({j, y}, false);
-        world->SetSouth({j, y}, true);
-        world->SetWest({j, y}, false);
+        world->SetNorth({j, y}, true);
+        world->SetEast({j, y}, true);
+        world->SetSouth({j, y}, false);
+        world->SetWest({j, y}, true);
           return {j, y};
       } else if ((abs(j - 1) <= sizOv2 && abs(y) <= sizOv2) &&
                  visited[world->Point2DtoIndex({j - 1, y})] &&
-                 !world->GetWest({j - 1, y}) &&
+                 world->GetWest({j - 1, y}) &&
                  !visited[world->Point2DtoIndex({j, y})]) 
       {
-        world->SetNorth({j, y}, false);
-        world->SetEast({j, y}, false);
-        world->SetSouth({j, y}, false);
-        world->SetWest({j, y}, true);
+        world->SetNorth({j, y}, true);
+        world->SetEast({j, y}, true);
+        world->SetSouth({j, y}, true);
+        world->SetWest({j, y}, false);
           return {j, y};
       }
   }
@@ -137,7 +137,7 @@ Point2D HuntAndKill::walk(World* world, Point2D pos)
   if (bud == false) {
     world->SetNodeColor(returnPoint, Color::Black);
 
-    world->SetNode(returnPoint, {false, false, false, false});
+    world->SetNode(returnPoint, {true, true, true, true});
 
     if (hasStarted == true) clearBack(world, returnPoint, stack);
   } else
@@ -179,8 +179,8 @@ Point2D HuntAndKill::hunt(World* world) {
 
 void HuntAndKill::clearBack(World* world, Point2D pos, Point2D from) 
 { 
-    if (pos.x < from.x) world->SetEast(pos, true);
-    if (pos.x > from.x) world->SetWest(pos, true);
-    if (pos.y > from.y) world->SetNorth(pos, true);
-    if (pos.y < from.y) world->SetSouth(pos, true);
+    if (pos.x < from.x) world->SetEast(pos, false);
+    if (pos.x > from.x) world->SetWest(pos, false);
+    if (pos.y > from.y) world->SetNorth(pos, false);
+    if (pos.y < from.y) world->SetSouth(pos, false);
 }
