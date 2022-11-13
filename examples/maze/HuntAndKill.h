@@ -17,14 +17,11 @@ class HuntAndKill : public MazeGeneratorBase {
  public:
   HuntAndKill() = default;
   std::string GetName() override { return "Hunt and Kill"; };
-  // todo: in order to step work properly, you have to store your current
-  // exploration status in the MazeGenerator members Steps should return true if
-  // it made changes in the world
+
   bool Step(World* world);
   // Clears and resets all data from the generator
   void Clear(World* world);
-  // todo: in order to step work properly, you have to store your current
-  // exploration status in the MazeGenerator members
+
 
   private:
   vector<Point2D> getAdjac(World* w, const Point2D& p);
@@ -53,7 +50,7 @@ class HuntAndKill : public MazeGeneratorBase {
 
   Point2D stack;
 
-  vector<bool> visited;
+  map<int, map<int, bool>> visitor;
 };
 
 #endif

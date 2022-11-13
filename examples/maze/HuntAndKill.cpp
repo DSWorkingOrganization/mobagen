@@ -6,15 +6,11 @@
 
 bool HuntAndKill::Step(World* world) 
 { 
-    int f = 0;
-
 	if (hasStarted == false) {
         siz = world->GetSize();
         siz *= siz;
         sizOv2 = world->GetSize() / 2;
         internalPos = {rand() % world->GetSize() - sizOv2, rand() % world->GetSize() - sizOv2};
-        for (int k = 0; k < siz; k++)
-            visited.push_back(false);
     }   
 
    if (startHunting == false) 
@@ -24,6 +20,7 @@ bool HuntAndKill::Step(World* world)
    else 
    {
        internalPos = hunt(world);
+     if (cantHunt == false) internalPos = walk(world, internalPos);
    }
 
    if (hasStarted == false) hasStarted = true;
@@ -45,7 +42,7 @@ void HuntAndKill::Clear(World* world)
     cantHunt = false;
     bud = false;
 
-    visited.clear();
+    visitor.clear();
 }
 
 vector<Point2D> HuntAndKill::getAdjac(World* w, const Point2D& p) 
@@ -53,23 +50,25 @@ vector<Point2D> HuntAndKill::getAdjac(World* w, const Point2D& p)
   vector<Point2D> visitables;
 
   // north
-  if (abs(p.y - 1) <= sizOv2 &&  // should be inside the board
-      !(visited[w->Point2DtoIndex({p.x, p.y - 1})]))
+  if (abs(p.x) <= sizOv2 &&
+      abs(p.y - 1) <= sizOv2 &&  // should be inside the board
+      !visitor[p.y - 1][p.x])
     visitables.emplace_back(p.x, p.y - 1);
   // east
-  if (abs(p.x + 1) <= sizOv2 &&    // should be inside the board
-      !(visited[w->Point2DtoIndex({p.x + 1, p.y})]))
+  if (abs(p.x + 1) <= sizOv2 &&
+      abs(p.y) <= sizOv2 &&  // should be inside the board
+      !visitor[p.y][p.x + 1])
     visitables.emplace_back(p.x + 1, p.y);
   // south
-  if (abs(p.y + 1) <= sizOv2 &&  // should be inside the board
-      !(visited[w->Point2DtoIndex({p.x, p.y + 1})]))
+  if (abs(p.x) <= sizOv2 &&
+      abs(p.y + 1) <= sizOv2 &&  // should be inside the board
+      !visitor[p.y + 1][p.x])
     visitables.emplace_back(p.x, p.y + 1);
   // west
-  if (abs(p.x - 1) <= sizOv2 &&   // should be inside the board
-      !(visited[w->Point2DtoIndex({p.x - 1, p.y})]))
+  if (abs(p.x - 1) <= sizOv2 &&
+      abs(p.y) <= sizOv2 &&  // should be inside the board
+      !visitor[p.y][p.x - 1])
     visitables.emplace_back(p.x - 1, p.y);
-
-  cout << visitables.size() << endl;
 
   return visitables;
 }
@@ -80,40 +79,32 @@ Point2D HuntAndKill::parseRow(World* world, int y)
   Point2D parseData;
 
   for (int j = -(sizOv2); j < (sizOv2) + 1; j++) {
-    if ((abs(j) <= sizOv2 && abs(y - 1) <= sizOv2) &&
-        visited[world->Point2DtoIndex({j, y - 1})] &&
-        world->GetNorth({j, y - 1}) &&
-        !visited[world->Point2DtoIndex({j, y})])
+    if ((abs(j) <= sizOv2 && abs(y - 1) <= sizOv2) && visitor[y - 1][j] &&
+        !visitor[y][j])
       {
           world->SetNorth({j, y}, false);
           world->SetEast({j, y}, true);
           world->SetSouth({j, y}, true);
           world->SetWest({j, y}, true);
           return {j, y};
-      } else if ((abs(j + 1) <= sizOv2 && abs(y) <= sizOv2) &&
-               visited[world->Point2DtoIndex({j + 1, y})] &&
-               world->GetEast({j + 1, y}) &&
-               !visited[world->Point2DtoIndex({j, y})])
+    } else if ((abs(j + 1) <= sizOv2 && abs(y) <= sizOv2) && visitor[y][j + 1] &&
+               !visitor[y][j])
       {
         world->SetNorth({j, y}, true);
         world->SetEast({j, y}, false);
         world->SetSouth({j, y}, true); 
         world->SetWest({j, y}, true);
           return {j, y};
-      } else if ((abs(j) <= sizOv2 && abs(y + 1) <= sizOv2) &&
-                 visited[world->Point2DtoIndex({j, y + 1})] &&
-                 world->GetSouth({j, y + 1}) &&
-                 !visited[world->Point2DtoIndex({j, y})]) 
+    } else if ((abs(j) <= sizOv2 && abs(y + 1) <= sizOv2) && visitor[y + 1][j] &&
+               !visitor[y][j]) 
       {
         world->SetNorth({j, y}, true);
         world->SetEast({j, y}, true);
         world->SetSouth({j, y}, false);
         world->SetWest({j, y}, true);
           return {j, y};
-      } else if ((abs(j - 1) <= sizOv2 && abs(y) <= sizOv2) &&
-                 visited[world->Point2DtoIndex({j - 1, y})] &&
-                 world->GetWest({j - 1, y}) &&
-                 !visited[world->Point2DtoIndex({j, y})]) 
+    } else if ((abs(j - 1) <= sizOv2 && abs(y) <= sizOv2) && visitor[y][j-1] &&
+               !visitor[y][j]) 
       {
         world->SetNorth({j, y}, true);
         world->SetEast({j, y}, true);
@@ -132,7 +123,7 @@ Point2D HuntAndKill::walk(World* world, Point2D pos)
   
   Point2D returnPoint = pos;
 
-  visited[world->Point2DtoIndex(returnPoint)] = true;
+  visitor[returnPoint.y][returnPoint.x] = true;
 
   if (bud == false) {
     world->SetNodeColor(returnPoint, Color::Black);
@@ -160,13 +151,12 @@ Point2D HuntAndKill::walk(World* world, Point2D pos)
 
 Point2D HuntAndKill::hunt(World* world) {
     Point2D pont;
-    for (int i = -sizOv2; i < sizOv2 + 1; i++)
+    for (int i = -sizOv2; i <= sizOv2 ; i++)
     {
         pont = parseRow(world, i);
         if (pont.x <= sizOv2) 
         {
             world->SetNodeColor(pont, Color::Black);
-            //visited[world->Point2DtoIndex(pont)] = true;
             startHunting = false;
             bud = true;
             return pont;

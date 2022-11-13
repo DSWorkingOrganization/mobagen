@@ -9,7 +9,7 @@ bool RecursiveBacktracker::Step(World* w) {
     if(point.x==INT_MAX && point.y==INT_MAX)
       return false; // no empty space no fill
     if (point.x != -w->GetSize() / 2 && point.y != -w->GetSize()) // remove a wall from a visitable neighbor
-    stack.push_back(point);
+        stack.push_back(point);
     w->SetNodeColor(point, Color::Red.Dark());
   }
 
