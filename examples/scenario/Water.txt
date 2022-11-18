@@ -1,0 +1,14 @@
+vector<color> m;
+for(int line = 0; line < sizel line++)
+	for(it column = 0; colum)
+	Color c = m[line*size +column]
+
+
+Difference of colors
+
+Subtract position from center
+Sum Vector direction time delta color, divided by the number of neighbors, that is the direction
+
+With gradient resolved, remove one point from position, split proportionally to each access by normalizing
+
+gradient calculator

@@ -2,6 +2,7 @@
 #define MOBAGEN_MYGENERATOR_H
 
 #include "../GeneratorBase.h"
+#include "../VoronoiPeaks.h"
 
 class RandomScenarioGenerator : public ScenarioGeneratorBase {
  public:
