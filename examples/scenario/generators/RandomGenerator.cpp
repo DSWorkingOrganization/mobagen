@@ -7,9 +7,9 @@ std::vector<Color32> RandomScenarioGenerator::Generate(int sideSize, float displ
   std::vector<Color32> colors;
 //   create your own function for noise generation
   FastNoiseLite base;
-  base.SetFractalOctaves(3);
+  //base.SetFractalOctaves(3);
   base.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
-  base.SetFractalType(FastNoiseLite::FractalType_FBm);
+  //base.SetFractalType(FastNoiseLite::FractalType_FBm);
   FastNoiseLite cellular;
   cellular.SetNoiseType(FastNoiseLite::NoiseType_Cellular);
   cellular.SetFractalOctaves(3);
