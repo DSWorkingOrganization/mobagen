@@ -18,11 +18,11 @@ using namespace std;
 
 class TwinSystem {
  public:
-  explicit TwinSystem(int64_t seed, int64_t peaks, std::vector<Color32> c,
+  explicit TwinSystem(std::vector<float> c,
                       int side, float depth, float width, float rain,
                       float flow, float pick, float drop, float solu, float vapor,
                       double minValue, double maxValue);
-
+  float getNoise(int x, int y);
  private:
   std::mt19937_64 generator;
   std::uniform_real_distribution<double> distribution;
@@ -51,13 +51,13 @@ class TwinSystem {
   float dropThreshold;
   float evaporation;
   float solubility;
-  const Point2D NEIGHBORS[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
   const Point2D DIRNS[4] = {{1, 0}, {0, 1}, {0, -1}, {-1, 0}};
   float waterSpeed;
   float waterFlowing;
   float materialFlowing;
   float materialSrc;
-  float dh, dw, prop, hOut, hIn, vOut, vIn, pck, drp;
+  float dh, dw, prop, hOut, hIn, vOut, vIn, pck, drp, cx, cy, direc, dx, dy, ox,
+      oy, dp, change;
 
   map<int, map<int, float>> finalElevation;
 
@@ -72,12 +72,11 @@ class TwinSystem {
   map<int, map<int, float>> totalFlow;
   map<int, map<int, Vector2>> waterVelocity;
 
-  void rain(int x, int y);
+  void raining(int x, int y);
   void calculateFlow(int x, int y);
   void erodeDeposit(int x, int y);
-  void flow(int x, int y);
+  void flowing(int x, int y);
   void evaporate(int x, int y);
-  float getNoise(int x, int y);
 };
 
 #endif  // MOBAGEN_TWIN_SYSTEM_H

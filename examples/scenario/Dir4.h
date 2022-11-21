@@ -13,7 +13,7 @@ public:
 	}
 
 	~Dir4() { 
-        delete dir;
+        //delete dir;
 	}
 };
 
